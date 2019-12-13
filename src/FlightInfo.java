@@ -50,15 +50,25 @@ public class FlightInfo {
      * @param arrAirport Takes custom String for arrival airport.
      */
     public FlightInfo(String airline, String depAirport, String arrAirport) {
-        setAirline(airline);
-        setArrAirport(arrAirport);
-        setDepAirport(depAirport);
+        this.airline = airline;
+        this.arrAirport = arrAirport;
+        this.depAirport = depAirport;
     }
 
+    /**
+     * Getters and setters for the FlightInfo object.
+     */
+
+    /*
+    Gets the airline name of the flight
+     */
     public String getAirline() {
         return airline;
     }
 
+    /*
+    Sets the airline name of the flight
+     */
     private void setAirline() {
         len = this.airlineList.length;
         this.airline = airlineList[rand.nextInt(len)];
