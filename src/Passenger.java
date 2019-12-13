@@ -1,33 +1,50 @@
-public class Passenger{
+
+public class Passenger {
   String name;
-  String seatType;
+  String  seatType;
   int luggage;
-  
-  
-  
-  
-  public Passenger(String name2, String seatType2, int luggage2){
-    name = name2;
-    seatType = seatType2;
-    luggage = luggage2;
+
+  private String[] seatingType = {"First Class", "Coach", "Economy",};
+
+
+  public Passenger(String name2, int seatType2, int luggage2) {
+    setName(name2);
+    setSeatType(seatType2);
+    setLuggage(luggage2);
   }
-  
-  
-  public String getName(){
-  return name;
+
+
+
+  public String getName() {
+    return name;
   }
-  
-  
+
+  private void setName(String name1) {
+    this.name= name1;
+  }
+
+
+
   public String getSeatType(){
     return seatType;
   }
-  
-  public int getLuggage(){
+
+  int len;
+
+
+  private void setSeatType(int seatIndex){
+    len = this.seatingType.length;
+    this.seatType = seatingType[seatIndex];
+  }
+
+  public int getLuggage() {
     return luggage;
   }
-  
-  
-  
+  private void setLuggage(int numOBags){
+    luggage = numOBags;
+  }
+
+
 }
     
     
