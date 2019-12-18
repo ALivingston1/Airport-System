@@ -2,13 +2,16 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
+        Aircraft a = new Aircraft();
+//        displayInfo(a.getFlightInfo(), "Flight Info");
+//        displayInfo(a.getPassengerInfo(), "Aircraft Info");
     }
 
     /**
      * This will display any array you put into it.
      */
     public static void displayInfo(String[] information, String title) {
-        int maxLen = information[1].length();
+        int maxLen = information[getLen(information)].length();
 
         /*
         Header
@@ -28,5 +31,20 @@ public class Main {
                     + " ".repeat(((maxLen + 2) - information[i].length()) / 2) + "|");
         }
         System.out.print("-".repeat(maxLen + 4) + "\n");
+    }
+
+    /**
+     * Gets the length of the longest flightInfo line
+     */
+    public static int getLen(String[] information) {
+        int len = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (len < information[j].length()) {
+                    len = information[j].length();
+                }
+            }
+        }
+        return len;
     }
 }
