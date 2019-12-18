@@ -1,19 +1,20 @@
 public class Aircraft {
-    public String[] flightInfo = new String[3];
+    private String[] aircraftInfo = new String[3];
+    private FlightInfo flightInfo;
 
     public Aircraft () {
         setFlightInfo();
     }
 
-    public void setFlightInfo () {
-        FlightInfo flightInfo = new FlightInfo();
+    private void setFlightInfo () {
+        this.flightInfo = new FlightInfo();
 
-        this.flightInfo[0] = flightInfo.getAirline();
-        this.flightInfo[1] = flightInfo.getDepAirport();
-        this.flightInfo[2] = flightInfo.getArrAirport();
+        aircraftInfo[0] = flightInfo.getAirline();
+        aircraftInfo[1] = flightInfo.getArrAirport();
+        aircraftInfo[2] =  flightInfo.getDepAirport();
     }
 
     public String[] getFlightInfo () {
-        return flightInfo;
+        return aircraftInfo;
     }
 }
