@@ -6,24 +6,22 @@ import java.util.Random;
  * flight number, and dep/arr times.
  */
 public class FlightInfo {
+
     /*
     Sets up all of the arrays needed for the
     airline name, airport name.
      */
-    private String[] airlineList = {"Spirit", "American"};
+    private String[] airlineList = {"Spirit", "American", "United", "SouthWest"};
     private String[] airportList = {"ATL", "LAX", "ORD", "DFW", "DEN", "JFK", "SFO", "SEA", "LAS", "MCO", "EWR", "CLT", "PHX", "IAH", "MIA", "BOS", "MSP", "FLL", "DTW", "PHL", "LGA", "BWI", "SLC", "SAN", "IAD", "DCA", "MDW", "TPA", "PDX", "HNL"};
+    String[] flightInfo = new String[3];
 
     /*
     Variables to store the aircraft's airline and
     departure/arrival airport.
      */
-    private String airline;
-    private String depAirport;
-    private String arrAirport;
-    private String tailNum;
-    private String flightNum;
-    private String depTime;
-    private String arrTime;
+    private static String airline;
+    private static String depAirport;
+    private static String arrAirport;
 
     /*
     Initializes length and random.
@@ -38,9 +36,18 @@ public class FlightInfo {
      */
     public FlightInfo() {
         setAirline();
+        flightInfo[0] = "Airline: " + getAirline();
+
         setDepAirport();
+        flightInfo[1] = "Departure Airport: " + getDepAirport();
+
         setArrAirport();
+        flightInfo[2] = "Arrival Airport: " + getArrAirport();
     }
+
+    /**
+     * Getters and setters for the FlightInfo object.
+     */
 
     /**
      * Overrides the randomized flight info and
@@ -49,51 +56,68 @@ public class FlightInfo {
      * @param depAirport Takes custom String for departure airport.
      * @param arrAirport Takes custom String for arrival airport.
      */
-    public FlightInfo(String airline, String depAirport, String arrAirport) {
+    public void setFlightInfo(String airline, String depAirport, String arrAirport) {
         this.airline = airline;
-        this.arrAirport = arrAirport;
+
         this.depAirport = depAirport;
+
+        this.arrAirport = arrAirport;
+    }
+
+    /*
+    Gets all flight info for the flight.
+     */
+    public String[] getFlightInfo () {
+        return flightInfo;
     }
 
     /**
-     * Getters and setters for the FlightInfo object.
-     */
-
-    /*
-    Gets the airline name of the flight
-     */
-    public String getAirline() {
-        return airline;
-    }
-
-    /*
-    Sets the airline name of the flight
+     * Getters and setters for airline name
      */
     private void setAirline() {
         len = this.airlineList.length;
         this.airline = airlineList[rand.nextInt(len)];
     }
 
+    /*
+    Overrides the default setAirline() method.
+     */
     private void setAirline(String airline) {
         this.airline = airline;
     }
 
-    public String getDepAirport() {
-        return depAirport;
+    /*
+    Gets the airline name.
+     */
+    public String getAirline() {
+        return airline;
     }
+
+
+    /**
+     * Getters and setters for departure airport
+     */
 
     private void setDepAirport() {
         len = this.airportList.length;
         this.depAirport = airportList[rand.nextInt(len)];
     }
 
+    /*
+    Overrides the default setDepAirport() method.
+     */
     private void setDepAirport(String depAirport) {
         this.depAirport = depAirport;
     }
 
-    public String getArrAirport() {
-        return arrAirport;
+    public String getDepAirport() {
+        return depAirport;
     }
+
+
+    /**
+     * Getters and setters for arrival airport
+     */
 
     private void setArrAirport() {
         len = this.airlineList.length;
@@ -108,7 +132,14 @@ public class FlightInfo {
         }
     }
 
+    /*
+    Overrides the default setArrAirport() method.
+     */
     private void setArrAirport(String arrAirport) {
         this.arrAirport = arrAirport;
+    }
+
+    public String getArrAirport() {
+        return arrAirport;
     }
 }

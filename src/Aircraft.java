@@ -1,20 +1,36 @@
+import javax.sound.midi.Soundbank;
+import java.sql.SQLOutput;
+import java.util.Arrays;
+
 public class Aircraft {
-    private String[] aircraftInfo = new String[3];
-    private FlightInfo flightInfo;
+    public String[] aircraftInfo = new String[3];
+    public FlightInfo flightInfo;
 
     public Aircraft () {
         setFlightInfo();
     }
 
+
+    /**
+     * Getters and setters for flight info
+     */
+
     private void setFlightInfo () {
         this.flightInfo = new FlightInfo();
+    }
 
-        aircraftInfo[0] = flightInfo.getAirline();
-        aircraftInfo[1] = flightInfo.getArrAirport();
-        aircraftInfo[2] =  flightInfo.getDepAirport();
+    /*
+    Override flight information.
+     */
+    private void setFlightInfo (String airline, String depAirport, String arrAirport) {
+        this.flightInfo.setFlightInfo(airline, depAirport, arrAirport);
     }
 
     public String[] getFlightInfo () {
-        return aircraftInfo;
+        return flightInfo.getFlightInfo();
+    }
+
+    private void setPassengerInfo () {
+//        Passenger passenger = new Passenger();
     }
 }
