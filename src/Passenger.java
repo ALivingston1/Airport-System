@@ -1,9 +1,9 @@
 import java.util.Random;
 
 public class Passenger {
-  String name;
-  String  seatType;
-  String luggage;
+  private String name;
+  private String seatType;
+  private String luggage;
   private int len;
   private Random rand = new Random();
   public String[] passengerInfo = new String[3];
@@ -15,24 +15,24 @@ public class Passenger {
 
   public Passenger() {
     setName();
-    passengerInfo[0] = getName();
+    passengerInfo[0] = "Name: " + getName();
 
     setSeatType();
-    passengerInfo[1] = getSeatType();
+    passengerInfo[1] = "Seat Type: " + getSeatType();
 
     setLuggage();
-    passengerInfo[2] = getLuggage();
+    passengerInfo[2] = "Amount of Luggage: " + getLuggage();
   }
 
   public Passenger (String name, String seatType, String numOfLuggage) {
     this.name = name;
-    passengerInfo[0] = name;
+    passengerInfo[0] = "Name: " + name;
 
     this.seatType = seatType;
-    passengerInfo[1] = seatType;
+    passengerInfo[1] = "Seat Type: " + seatType;
 
     this.luggage = numOfLuggage;
-    passengerInfo[2] = luggage;
+    passengerInfo[2] = "Amount of Luggage: " + luggage;
   }
 
 

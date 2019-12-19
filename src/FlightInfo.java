@@ -5,14 +5,14 @@ import java.util.Random;
  * It will set Airline, dep/arr airports, tail number,
  * flight number, and dep/arr times.
  */
-public class FlightInfo {
+public class FlightInfo extends Display {
 
     /*
     Sets up all of the arrays needed for the
     airline name, airport name.
      */
     private String[] airlineList = {"Spirit", "American", "United", "SouthWest"};
-    private String[] airportList = {"ATL", "LAX", "ORD", "DFW", "DEN", "JFK", "SFO", "SEA", "LAS", "MCO", "EWR", "CLT", "PHX", "IAH", "MIA", "BOS", "MSP", "FLL", "DTW", "PHL", "LGA", "BWI", "SLC", "SAN", "IAD", "DCA", "MDW", "TPA", "PDX", "HNL"};
+    private String[] airportList = Airport.airportList;
 
     /*
     Variables to store the aircraft's airline and
@@ -24,21 +24,21 @@ public class FlightInfo {
     public String[] flightInfo = new String[3];
 
     /*
-    Initializes length and random.
+    Define length and random.
      */
     private int len;
     private Random rand = new Random();
 
     /**
-     * Constructor
+     * Constructors for FlightInfo class.
      * Sets up the flight info.
      * Sets airline, dep/arr airports.
      */
-    public FlightInfo() {
+    public FlightInfo(String depAirport) {
         setAirline();
         flightInfo[0] = "Airline: " + getAirline();
 
-        setDepAirport();
+        setDepAirport(depAirport);
         flightInfo[1] = "Departure Airport: " + getDepAirport();
 
         setArrAirport();

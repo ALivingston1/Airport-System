@@ -1,50 +1,42 @@
-import java.util.Arrays;
+import java.sql.SQLOutput;
+import java.util.*;
 
 public class Main {
+
+    public static List<Airport> airportList = new ArrayList<Airport>();
+
     public static void main(String[] args) {
-        Aircraft a = new Aircraft();
-//        displayInfo(a.getFlightInfo(), "Flight Info");
-//        displayInfo(a.getPassengerInfo(), "Aircraft Info");
+        Scanner input = new Scanner(System.in);
+
+        setupAirports();
+
+        Display.printAirports();
+        System.out.println("\n".repeat(4));
+
+        Display.optionMenu(input);
+
     }
 
     /**
-     * This will display any array you put into it.
+     * Creates a random amount of airports within bounds of 100
      */
-    public static void displayInfo(String[] information, String title) {
-        int maxLen = information[getLen(information)].length();
-
-        /*
-        Header
-         */
-        System.out.println("-".repeat(maxLen+4));
-        System.out.println("|" + " ".repeat(((maxLen + 3) - title.length()) / 2)
-                + title
-                + " ".repeat(((maxLen + 2) - title.length()) / 2) + "|");
-        System.out.println("-".repeat(maxLen + 4));
-
-        /*
-        Body
-         */
-        for (int i = 0; i < information.length; i++) {
-            System.out.println("|" + " ".repeat(((maxLen + 3) - information[i].length()) / 2)
-                    + information[i]
-                    + " ".repeat(((maxLen + 2) - information[i].length()) / 2) + "|");
+    public static void setupAirports () {
+        for (int i = 0; i < new Random().nextInt(100); i++) {
+            createAirport();
         }
-        System.out.print("-".repeat(maxLen + 4) + "\n");
     }
 
-    /**
-     * Gets the length of the longest flightInfo line
-     */
-    public static int getLen(String[] information) {
-        int len = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (len < information[j].length()) {
-                    len = information[j].length();
-                }
-            }
-        }
-        return len;
+    public static void createAirport () {
+        Airport airport = new Airport();
+        airportList.add(airport);
+    }
+
+    public static void createAirport (String name, int capacity) {
+        Airport airport = new Airport(name, capacity);
+        airportList.add(airport);
+    }
+
+    public static List<Airport> getAirportList() {
+        return airportList;
     }
 }
