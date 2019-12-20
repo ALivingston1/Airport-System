@@ -1,5 +1,3 @@
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -41,7 +39,7 @@ public class Airport extends Display {
         airportInfo[3] = "Arrivals: " + "WIP";
     }
 
-    /*
+    /**
     Custom constructor for custom airport
      */
     public Airport (String name, int capacity) {
@@ -62,7 +60,7 @@ public class Airport extends Display {
      * Setters and getters for airport name
      */
 
-    /*
+    /**
     Sets the airport name randomly
      */
     private void setAirportName(){
@@ -70,7 +68,7 @@ public class Airport extends Display {
         this.name = airportList[rand.nextInt(len)];
     }
 
-    /*
+    /**
     Sets custom airport name
      */
     private void setAirportName(String airportName){
@@ -90,14 +88,14 @@ public class Airport extends Display {
      * Setters and getters for airport capacity.
      */
 
-    /*
+    /**
     Set capacity at airport.
      */
     private void setCapacity () {
         this.capacity = rand.nextInt(2500);
     }
 
-    /*
+    /**
     Allows for custom capacity
      */
     private void setCapacity (int capacity) {
@@ -128,7 +126,7 @@ public class Airport extends Display {
         return this.airportInfo;
     }
 
-    /*
+    /**
      * Creates an aircraft with departure airport set to the airport's name.
      */
     public void createAircraft () {
@@ -136,7 +134,7 @@ public class Airport extends Display {
         this.aircraftList.add(aircraft);
     }
 
-    /*
+    /**
      * Creates a custom aircraft.
      */
     public void createAircraft (String airline, String depAirport, String arrAirport) {

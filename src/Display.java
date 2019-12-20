@@ -1,5 +1,6 @@
 import org.w3c.dom.ls.LSOutput;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -35,13 +36,12 @@ public class Display {
     }
 
     /**
-     * Prints options bar
+     * Prints Array
      */
-    public static void printOptions () {
-        System.out.println("What would you like to do?");
-        for (int i = 0; i < options.length; i++) {
-            System.out.print(options[i]);
-            if (i < options.length-1) {
+    public static void printArray (String[] Array) {
+        for (int i = 0; i < Array.length; i++) {
+            System.out.print(Array[i]);
+            if (i < Array.length-1) {
                 System.out.print(", ");
             }
         }
@@ -49,17 +49,10 @@ public class Display {
     }
 
     /**
-     * Prints object type bar
+     * Clears the console
      */
-    public static void printObjectType (String option) {
-        System.out.println(option + " what?");
-        for (int i = 0; i < objectType.length; i++) {
-            System.out.print(objectType[i]);
-            if (i < objectType.length-1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.print("\n");
+    public static void clearPage(){
+        System.out.println("\n".repeat(100));
     }
 
     /**
@@ -122,24 +115,24 @@ public class Display {
         boolean running = true;
 
         while (running) {
-            Display.printOptions();
+            Display.printArray(options);
 
             String option = input.next();
 
 //            options = {"BACK", "ADD", "DELETE", "EXIT"};
 
             if (option.equalsIgnoreCase(Display.options[0])) {  //Back
-                System.out.flush();
+//                clearPage();
 
             } else if (option.equalsIgnoreCase(Display.options[1])) {    //Add
-                System.out.flush();
+//                clearPage();
                 addObject(input);
 
             } else if (option.equalsIgnoreCase(Display.options[2])) {    //Delete
-                System.out.flush();
+//                clearPage();
 
             } else if (option.equalsIgnoreCase(Display.options[3])) {   //VIEW
-                System.out.flush();
+//                clearPage();
             } else if (option.equalsIgnoreCase(Display.options[4])) {   //EXIT
                 System.out.println("Exiting...");
                 break;
@@ -159,135 +152,168 @@ public class Display {
         boolean adding = true;
 
         while (adding) {
-            String[] objectType = {"AIRPORT", "AIRCRAFT", "PASSENGER"};
-            Display.printObjectType("ADD");
+            System.out.println("Add what?\n");
+            Display.printArray(objectType);
             String add = input.next();
 
             if (add.equalsIgnoreCase(objectType[0])) {  //Airport
-                System.out.println("Type: AIRPORT NAME, AIRPORT CAPACITY");
-                String x = input.next();
-                Integer y = input.nextInt();
-                boolean creating = true;
-
-                while (creating) {
-                    if (x instanceof String) {  //If airport name is string
-                        if (y instanceof Integer) {    //If capacity is an integer (string)
-                            Main.createAirport(x, y);
-                            creating = false;
-                        } else {
-                            System.out.println("Error: Not a valid response. Try again.");
-                            continue;
-                        }
-                    } else {
-                        System.out.println("Error: Not a valid response. Try again.");
-                        continue;
-                    }
-                }
-
-                System.out.println("Created Airport.");
+                addAirport(input);
                 adding = false;
             } else if (add.equalsIgnoreCase(objectType[1])) {   //Aircraft
-                /*
-                Select airport to put aircraft on
-                 */
-                Integer airport;
-
-                boolean selecting = true;
-                while (selecting) {
-                    System.out.println("Select the airport to add the passenger (Use index of airport)");
-                    for (int i = 0; i < (Main.getAirportList().toArray().length); i++) {
-                        System.out.print(Main.airportList.get(i).getAirportName() + ", ");
-                    }
-                    System.out.print("\n");
-                    airport = input.nextInt();
-
-                    if (airport <= Main.getAirportList().size() & airport >= 0) {
-                        /*
-                        Create Passenger
-                         */
-                        System.out.println("Type: NAME, SEAT TYPE, AMOUNT OF LUGGAGE");
-                        String x = input.next();
-                        String y = input.next();
-                        String z = input.next();
-                        boolean creating = true;
-
-                        while (creating) {
-                            if (x instanceof String) {  //If airport name is string
-                                if (y instanceof String) {    //If capacity is an integer (string)
-                                    Main.getAirportList().get(airport).createAircraft(x, y, z);
-                                    creating = false;
-                                } else {
-                                    System.out.println("Error: Not a valid response. Try again.");
-                                    continue;
-                                }
-                            } else {
-                                System.out.println("Error: Not a valid response. Try again.");
-                                continue;
-                            }
-                        }
-                        selecting = false;
-                    }
-                }
-                System.out.println("Aircraft Created.");
+                addAircraft(input);
                 adding = false;
             } else if (add.equalsIgnoreCase(objectType[2])) {   //Passenger
-                /*
-                Select aircraft to put passenger on
-                 */
-                Integer airport;
-                Integer aircraft;
-
-                boolean selecting = true;
-                while (selecting) {
-                    System.out.println("Select the airport to add the passenger (Use index of airport)");
-                    System.out.println(Arrays.toString(Airport.airportList));
-                    airport = input.nextInt();
-                    if (airport <= Main.getAirportList().size() & airport >= 0) {
-                        System.out.println("Select the aircraft to add the passenger (Use the index of the aircraft)");
-                        System.out.println(Arrays.toString(Aircraft.getPassengerList().toArray()));
-                        aircraft = input.nextInt();
-
-                        /*
-                        Create Passenger
-                         */
-                        System.out.println("Type: NAME, SEAT TYPE, AMOUNT OF LUGGAGE");
-                        String x = input.next();
-                        String y = input.next();
-                        String z = input.next();
-                        boolean creating = true;
-
-                        while (creating) {
-                            if (x instanceof String) {  //If airport name is string
-                                if (y instanceof String) {    //If capacity is an integer (string)
-                                    if (z instanceof String) {
-                                        Main.getAirportList().get(airport).getAircraftList().get(aircraft).createPassenger(x, y, z);
-
-                                        creating = false;
-                                    } else {
-                                        System.out.println("Error Not a valid response. Try again.");
-                                        continue;
-                                    }
-                                } else {
-                                    System.out.println("Error: Not a valid response. Try again.");
-                                    continue;
-                                }
-                            } else {
-                                System.out.println("Error: Not a valid response. Try again.");
-                                continue;
-                            }
-                        }
-                        selecting = false;
-                    } else {
-                        System.out.println("Error: Not a valid response. Try again.");
-                        continue;
-                    }
-                }
-                System.out.println("Created Passenger.");
+                addPassenger(input);
                 adding = false;
             } else {
                 System.out.println("Error: Not a valid response. Try again.");
                 continue;
             }
         }
+    }
+
+    /**
+     * Asks user to add an airport
+     * @param input Scanner
+     */
+    public static void addAirport (Scanner input) {
+        System.out.println("\nEnter Information: AIRPORT NAME, AIRPORT CAPACITY");
+        String x = input.next();
+        Integer y = input.nextInt();
+        boolean creating = true;
+
+        while (creating) {
+            if (x instanceof String) {  //If airport name is string
+                if (y instanceof Integer) {    //If capacity is an integer (string)
+                    Main.createAirport(x, y);
+                    creating = false;
+                } else {
+                    System.out.println("Error: Not a valid response. Try again.");
+                    continue;
+                }
+            } else {
+                System.out.println("Error: Not a valid response. Try again.");
+                continue;
+            }
+        }
+
+        System.out.println("Created Airport.\n");
+    }
+
+    /**
+     * Asks user to add an aircraft
+     * @param input Scanner
+     */
+    public static void addAircraft (Scanner input) {
+         /*
+                Select airport to put aircraft on
+                 */
+        String airport;
+
+        boolean selecting = true;
+        while (selecting) {
+            System.out.println("\nSelect the airport to add the aircraft");
+
+            for (int i = 0; i < (Main.getAirportList().toArray().length); i++) {
+                System.out.print(Main.airportList.get(i).getAirportName());
+                if (i < Main.airportList.size() - 1) {
+                    System.out.print(", ");
+                }
+            }
+
+            System.out.print("\n");
+            airport = input.next();
+
+            for (int i = 0; i < Main.getAirportList().toArray().length; i++) {
+                if (airport.equalsIgnoreCase(Main.airportList.get(i).getAirportName())) {
+                /*
+                Create Aircraft
+                 */
+                    System.out.println("Enter Information: AIRLINE, ARRIVAL AIRPORT");
+                    String x = input.next();
+                    String y = input.next();
+                    boolean creating = true;
+
+                    while (creating) {
+                        if (x instanceof String) {  //If airport name is string
+                            if (y instanceof String) {    //If capacity is an integer (string)
+                                Main.airportList.get(i).createAircraft(x, Main.airportList.get(i).getAirportName(), y);
+                                i = Main.getAirportList().toArray().length;
+                                creating = false;
+                            } else {
+                                System.out.println("Error: Not a valid response. Try again.");
+                            }
+                        } else {
+                            System.out.println("Error: Not a valid response. Try again.");
+                        }
+                    }
+                    selecting = false;
+                }
+            }
+        }
+        System.out.println("Aircraft Created.");
+    }
+
+    /**
+     * Asks user to add a passenger
+     * @param input
+     */
+    public static void addPassenger (Scanner input) {
+        /*
+        Select aircraft to put passenger on
+         */
+        String airport;
+        String aircraft;
+
+        boolean selecting = true;
+        while (selecting) {
+            System.out.println("Select the airport to add the passenger (Use index of airport)");
+            Display.printArray(Airport.airportList);
+            airport = input.next();
+
+            for (int i = 0; i < Main.airportList.size(); i++) {
+                if (airport.equalsIgnoreCase(Main.airportList.get(i).getAirportName())) {
+                    System.out.println("Select the aircraft to add the passenger (Use the index of the aircraft)");
+                    System.out.println(Arrays.toString(Aircraft.getPassengerList().toArray()));
+                    aircraft = input.next();
+
+                /*
+                Create Passenger
+                 */
+                    System.out.println("Enter Information: NAME, SEAT TYPE, AMOUNT OF LUGGAGE");
+                    String x = input.next();
+                    String y = input.next();
+                    String z = input.next();
+                    boolean creating = true;
+
+                    while (creating) {
+                        if (x instanceof String) {  //If airport name is string
+                            if (y instanceof String) {    //If capacity is an integer (string)
+                                if (z instanceof String) {
+
+                                    i = Main.airportList.size();
+
+                                    creating = false;
+                                } else {
+                                    System.out.println("Error Not a valid response. Try again.");
+                                    continue;
+                                }
+                            } else {
+                                System.out.println("Error: Not a valid response. Try again.");
+                                continue;
+                            }
+                        } else {
+                            System.out.println("Error: Not a valid response. Try again.");
+                            continue;
+                        }
+                    }
+                    selecting = false;
+                } else {
+                    System.out.println("Error: Not a valid response. Try again.");
+                    continue;
+                }
+            }
+        }
+        System.out.println("Created Passenger.");
     }
 }
