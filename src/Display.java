@@ -1,12 +1,15 @@
 import org.w3c.dom.ls.LSOutput;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Display {
     public static String[] options = {"BACK", "ADD", "DELETE", "VIEW", "EXIT"};
     public static String[] objectType = {"AIRPORT", "AIRCRAFT", "PASSENGER"};
     private static String displayBox;
+
+    private Random rand = new Random();
 
     /**
      * Prints the list of airports
@@ -21,7 +24,7 @@ public class Display {
             }
         }
         System.out.print("\n");
-        System.out.print(" ".repeat(10) + "Total: " + " " + Airport.airportList.length + "\n");
+        System.out.print("Total: " + " " + Main.airportList.size() + "\n\n");
     }
 
     /**
@@ -65,13 +68,13 @@ public class Display {
      * @param title Title of display
      * @return String displayBox
      */
-    public void setDisplayBox (String title, String[] information) {
+    public static void setDisplayBox (String title, String[] information) {
         int maxLen = getLen(information);
 
         /*
         Header section of displayBox
          */
-        this.displayBox = ("-".repeat(maxLen+4) + "\n")
+        displayBox = ("-".repeat(maxLen+4) + "\n")
                 + ("|" + " ".repeat(((maxLen + 3) - title.length()) / 2) + title + " ".repeat(((maxLen + 2) - title.length()) / 2) + "|\n")
                 + ("-".repeat(maxLen + 4) + "\n");
 
@@ -79,11 +82,11 @@ public class Display {
         Body
          */
         for (int i = 0; i < information.length; i++) { //For every row in the box
-            this.displayBox = displayBox + (("|" + " ".repeat(((maxLen + 3) - information[i].length()) / 2))
+            displayBox = displayBox + (("|" + " ".repeat(((maxLen + 3) - information[i].length()) / 2))
                     + (information[i])
                     + (" ".repeat(((maxLen + 2) - information[i].length()) / 2) + "|") + "\n");
         }
-        this.displayBox = displayBox + ("-".repeat(maxLen + 4) + "\n");
+        displayBox = displayBox + ("-".repeat(maxLen + 4) + "\n");
     }
 
     /**
@@ -192,7 +195,10 @@ public class Display {
                 boolean selecting = true;
                 while (selecting) {
                     System.out.println("Select the airport to add the passenger (Use index of airport)");
-                    System.out.println(Arrays.toString(Main.getAirportList().toArray()));
+                    for (int i = 0; i < (Main.getAirportList().toArray().length); i++) {
+                        System.out.print(Main.airportList.get(i).getAirportName() + ", ");
+                    }
+                    System.out.print("\n");
                     airport = input.nextInt();
 
                     if (airport <= Main.getAirportList().size() & airport >= 0) {

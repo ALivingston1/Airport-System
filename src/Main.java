@@ -10,9 +10,19 @@ public class Main {
 
         setupAirports();
 
-        Display.printAirports();
-        System.out.println("\n".repeat(4));
+//        Airport jfk = new Airport();
+//        Display.setDisplayBox("JFK", jfk.getAirportInfo());
+//        Display.printInfoBox();
+//
+//        Aircraft hi = new Aircraft("Aircraft Information");
+//        Display.setDisplayBox("Flight Information", hi.getFlightInfo());
+//        Display.printInfoBox();
+//
+//        Passenger tom = new Passenger();
+//        Display.setDisplayBox("Passenger", hi.getPassengerInfo());
+//        Display.printInfoBox();
 
+        Display.printAirports();
         Display.optionMenu(input);
 
     }
@@ -21,7 +31,7 @@ public class Main {
      * Creates a random amount of airports within bounds of 100
      */
     public static void setupAirports () {
-        for (int i = 0; i < new Random().nextInt(100); i++) {
+        for (int i = 0; i < new Random().nextInt(); i++) {
             createAirport();
         }
     }

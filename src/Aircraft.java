@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Aircraft {
     private String[] aircraftInfo = new String[3];
+    private Random rand = new Random();
 
     /*
     Defines aircraft data
@@ -22,6 +24,14 @@ public class Aircraft {
      * @param depAirport Departure airport
      */
     public Aircraft (String depAirport) {
+
+        /*
+        Create a random number of aircraft within the capacity of the airport
+         */
+        for (int i = 0; i < rand.nextInt(416); i++) {
+            createPassenger();
+        }
+
         setFlightInfo(depAirport);
         aircraftInfo[0] = "Flight Information: " + getFlightInfo();
 
