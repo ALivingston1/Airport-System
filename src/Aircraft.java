@@ -7,8 +7,9 @@ public class Aircraft {
     private Random rand = new Random();
 
     /*
-    Defines aircraft data
-     */
+        Defines aircraft data
+         */
+    public int flightNumber;
     private FlightInfo flightInfo;
 
     /*
@@ -23,15 +24,14 @@ public class Aircraft {
      * and passenger info.
      * @param depAirport Departure airport
      */
-    public Aircraft (String depAirport) {
-
+    public Aircraft (String depAirport, int flightNumber) {
         /*
         Create a random number of aircraft within the capacity of the airport
          */
         for (int i = 0; i < rand.nextInt(416); i++) {
             createPassenger();
         }
-
+        setFlightNumber(flightNumber);
         setFlightInfo(depAirport);
         aircraftInfo[0] = "Flight Information: " + getFlightInfo();
 
@@ -45,8 +45,10 @@ public class Aircraft {
      * @param depAirport Departure Airport
      * @param arrAirport Arrival Airport
      */
-    public Aircraft (String airline, String depAirport, String arrAirport) {
+    public Aircraft (int flightNumber, String airline, String depAirport, String arrAirport) {
+        setFlightNumber(flightNumber);
         setFlightInfo(airline, depAirport, arrAirport);
+
         aircraftInfo[0] = "Flight Information: " + getFlightInfo();
 
         setPassengerInfo();
@@ -59,18 +61,34 @@ public class Aircraft {
      */
 
     private void setFlightInfo (String depAirport) {
-        this.flightInfo = new FlightInfo(depAirport);
+        flightInfo = new FlightInfo(depAirport);
     }
 
     /*
     Override flight information.
      */
     public void setFlightInfo (String airline, String depAirport, String arrAirport) {
-        this.flightInfo = new FlightInfo(airline, depAirport, arrAirport);
+        flightInfo = new FlightInfo(airline, depAirport, arrAirport);
     }
 
     public String[] getFlightInfo () {
         return flightInfo.getFlightInfo();
+    }
+
+    /**
+     * Gets flight number
+     * @return flightNumber
+     */
+    public int getFlightNumber() {
+        return flightNumber;
+    }
+
+    /**
+     * Sets flight number for aircraft.
+     * @param flightNumber Flight number
+     */
+    public void setFlightNumber(int flightNumber) {
+        this.flightNumber = flightNumber;
     }
 
     /**

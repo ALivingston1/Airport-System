@@ -4,9 +4,11 @@ import java.util.Random;
 
 public class Airport extends Display {
     public static String[] airportList = {"ATL", "LAX", "ORD", "DFW", "DEN", "JFK", "SFO", "SEA", "LAS", "MCO", "EWR", "CLT", "PHX", "IAH", "MIA", "BOS", "MSP", "FLL", "DTW", "PHL", "LGA", "BWI", "SLC", "SAN", "IAD", "DCA", "MDW", "TPA", "PDX", "HNL"};
-    private List<Aircraft> aircraftList = new ArrayList<Aircraft>();
-    private String[] airportInfo = new String[4];
-    private int capacity;
+    public List<Aircraft> aircraftList = new ArrayList<Aircraft>();
+    private static String[] airportInfo = new String[4];
+
+    public static int flightNum = 0;
+    private static int capacity;
 
     /*
     Define data regarding airport name
@@ -15,51 +17,7 @@ public class Airport extends Display {
     private Random rand = new Random();
     private int len;
 
-    /**
-     * Constructors for Airport class.
-     * Creates a new airport with 0 aircraft.
-     */
-    public Airport () {
-        setAirportName();
-        setCapacity();
-
-        /*
-        Create a random number of aircraft within the capacity of the airport
-         */
-        for (int i = 0; i < rand.nextInt(capacity); i++) {
-            createAircraft();
-        }
-
-        /*
-        Sets up the flight info
-         */
-        airportInfo[0] = "Airport Identifier: " + name;
-        airportInfo[1] = "Aircraft Capacity: " + capacity;
-        airportInfo[2] = "Departures: " + getNumAircraft();
-        airportInfo[3] = "Arrivals: " + "WIP";
-    }
-
-    /**
-    Custom constructor for custom airport
-     */
-    public Airport (String name, int capacity) {
-        setAirportName(name);
-        setCapacity(capacity);
-
-        /*
-        Sets up the flight info
-         */
-        airportInfo[0] = "Airport Identifier: " + name;
-        airportInfo[1] = "Aircraft Capacity: " + capacity;
-        airportInfo[2] = "Departures: " + getNumAircraft();
-        airportInfo[3] = "Arrivals: " + "WIP";
-    }
-
-
-    /**
-     * Setters and getters for airport name
-     */
-
+    //Setters and getters for airport name
     /**
     Sets the airport name randomly
      */
@@ -83,11 +41,7 @@ public class Airport extends Display {
         return name;
     }
 
-
-    /**
-     * Setters and getters for airport capacity.
-     */
-
+    //Setters and getters for airport capacity
     /**
     Set capacity at airport.
      */
@@ -123,30 +77,83 @@ public class Airport extends Display {
      * @return String[] Airport information
      */
     public String[] getAirportInfo () {
-        return this.airportInfo;
+        return airportInfo;
     }
 
+
+    //Create an aircraft
     /**
      * Creates an aircraft with departure airport set to the airport's name.
      */
     public void createAircraft () {
-        Aircraft aircraft = new Aircraft(name);
-        this.aircraftList.add(aircraft);
+        Aircraft aircraft = new Aircraft(name, flightNum);
+        flightNum++;
+        aircraftList.add(aircraft);
     }
 
     /**
      * Creates a custom aircraft.
      */
     public void createAircraft (String airline, String depAirport, String arrAirport) {
-        Aircraft aircraft = new Aircraft(airline, depAirport, arrAirport);
-        this.aircraftList.add(aircraft);
+        Aircraft aircraft = new Aircraft(flightNum, airline, depAirport, arrAirport);
+        flightNum = flightNum + 1;
+        aircraftList.add(aircraft);
+    }
+
+
+    /**
+     * Prints the flights in the list
+     */
+    public void printAircraftList () {
+        for (int i = 0; i < aircraftList.size(); i++) {
+            System.out.print("Flight: " + (i+1));
+            if (i < aircraftList.size() - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.print("\n");
+    }
+
+
+    //Constructors for Airport class
+    /**
+     * Creates a new airport with a random number of
+     * aircraft (within the airport's capacity).
+     */
+    public Airport () {
+        setAirportName();
+        setCapacity();
+
+        /*
+        Create a random number of aircraft within the capacity of the airport
+         */
+        for (int i = 0; i < rand.nextInt(capacity); i++) {
+            createAircraft();
+        }
+
+        /*
+        Sets up the flight info
+         */
+        airportInfo[0] = "Airport Identifier: " + name;
+        airportInfo[1] = "Aircraft Capacity: " + capacity;
+        airportInfo[2] = "Departures: " + getNumAircraft();
+        airportInfo[3] = "Arrivals: " + "WIP";
     }
 
     /**
-     * Gets list of aircraft in airport
-     * @return List<Aircraft> aircraftList
+     * Creates empty aiport with custom name
+     * and capacity.
      */
-    public List<Aircraft> getAircraftList () {
-        return this.aircraftList;
+    public Airport (String name, int capacity) {
+        setAirportName(name);
+        setCapacity(capacity);
+
+        /*
+        Sets up the flight info
+         */
+        airportInfo[0] = "Airport Identifier: " + name;
+        airportInfo[1] = "Aircraft Capacity: " + capacity;
+        airportInfo[2] = "Departures: " + getNumAircraft();
+        airportInfo[3] = "Arrivals: " + "WIP";
     }
 }

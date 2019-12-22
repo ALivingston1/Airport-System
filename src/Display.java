@@ -1,16 +1,32 @@
-import org.w3c.dom.ls.LSOutput;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Display {
-    public static String[] options = {"BACK", "ADD", "DELETE", "VIEW", "EXIT"};
+    public static String[] options = {"ADD", "DELETE", "VIEW", "EXIT"};
     public static String[] objectType = {"AIRPORT", "AIRCRAFT", "PASSENGER"};
-    private static String displayBox;
+    protected static String displayBox;
 
     private Random rand = new Random();
+
+    private static boolean airportFound = false;
+    private static boolean flightFound = false;
+
+    static Airport foundAiport;
+    static Aircraft foundFlight;
+
+
+    //Print methods
+    /**
+     * Prints Array
+     */
+    public static void printArray (String[] Array) {
+        for (int i = 0; i < Array.length; i++) {
+            System.out.print(Array[i]);
+            if (i < Array.length-1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.print("\n");
+    }
 
     /**
      * Prints the list of airports
@@ -29,89 +45,11 @@ public class Display {
     }
 
     /**
-     * Prints to information box to console
-     */
-    public static void printInfoBox () {
-        System.out.println(displayBox);
-    }
-
-    /**
-     * Prints Array
-     */
-    public static void printArray (String[] Array) {
-        for (int i = 0; i < Array.length; i++) {
-            System.out.print(Array[i]);
-            if (i < Array.length-1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.print("\n");
-    }
-
-    /**
-     * Clears the console
-     */
-    public static void clearPage(){
-        System.out.println("\n".repeat(100));
-    }
-
-    /**
-     * This will display any array you put into it.
-     * @param information Array being displayed
-     * @param title Title of display
-     * @return String displayBox
-     */
-    public static void setDisplayBox (String title, String[] information) {
-        int maxLen = getLen(information);
-
-        /*
-        Header section of displayBox
-         */
-        displayBox = ("-".repeat(maxLen+4) + "\n")
-                + ("|" + " ".repeat(((maxLen + 3) - title.length()) / 2) + title + " ".repeat(((maxLen + 2) - title.length()) / 2) + "|\n")
-                + ("-".repeat(maxLen + 4) + "\n");
-
-        /*
-        Body
-         */
-        for (int i = 0; i < information.length; i++) { //For every row in the box
-            displayBox = displayBox + (("|" + " ".repeat(((maxLen + 3) - information[i].length()) / 2))
-                    + (information[i])
-                    + (" ".repeat(((maxLen + 2) - information[i].length()) / 2) + "|") + "\n");
-        }
-        displayBox = displayBox + ("-".repeat(maxLen + 4) + "\n");
-    }
-
-    /**
-     * Gets displaybox
-     * @return String displaybox
-     */
-    public String getDisplayBox () {
-        return this.displayBox;
-    }
-
-    /**
-     * Gets the length of the longest line in the String[]
-     * @param information Array trying to get the longest
-     * length from.
-     * @return int maximum length
-     */
-    public static int getLen (String[] information) {
-        int len = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (len < information[j].length()) {
-                    len = information[j].length();
-                }
-            }
-        }
-        return len;
-    }
-
-    /**
-     * OPTION MENU
+     * Displays the option menu and asks what
+     * the user would like to do.
      */
     public static void optionMenu (Scanner input) {
+        printAirports();
         boolean running = true;
 
         while (running) {
@@ -121,21 +59,19 @@ public class Display {
 
 //            options = {"BACK", "ADD", "DELETE", "EXIT"};
 
-            if (option.equalsIgnoreCase(Display.options[0])) {  //Back
-//                clearPage();
-
-            } else if (option.equalsIgnoreCase(Display.options[1])) {    //Add
+            if (option.equalsIgnoreCase(Display.options[0])) {    //Add
 //                clearPage();
                 addObject(input);
 
-            } else if (option.equalsIgnoreCase(Display.options[2])) {    //Delete
+            } else if (option.equalsIgnoreCase(Display.options[1])) {    //Delete
 //                clearPage();
 
-            } else if (option.equalsIgnoreCase(Display.options[3])) {   //VIEW
+            } else if (option.equalsIgnoreCase(Display.options[2])) {   //VIEW
 //                clearPage();
-            } else if (option.equalsIgnoreCase(Display.options[4])) {   //EXIT
+                viewObject(input);
+            } else if (option.equalsIgnoreCase(Display.options[3])) {   //EXIT
                 System.out.println("Exiting...");
-                break;
+                running = false;
             } else {
                 System.out.println("Error: Not a valid response. Try again.");
                 continue;
@@ -143,35 +79,8 @@ public class Display {
         }
     }
 
-    /**
-     * Adds an Aiport, Aircraft, or Passenger Object
-     * @param input Scanner
-     */
-    public static void addObject (Scanner input) {
-        System.out.flush();
-        boolean adding = true;
 
-        while (adding) {
-            System.out.println("Add what?\n");
-            Display.printArray(objectType);
-            String add = input.next();
-
-            if (add.equalsIgnoreCase(objectType[0])) {  //Airport
-                addAirport(input);
-                adding = false;
-            } else if (add.equalsIgnoreCase(objectType[1])) {   //Aircraft
-                addAircraft(input);
-                adding = false;
-            } else if (add.equalsIgnoreCase(objectType[2])) {   //Passenger
-                addPassenger(input);
-                adding = false;
-            } else {
-                System.out.println("Error: Not a valid response. Try again.");
-                continue;
-            }
-        }
-    }
-
+    //Add an Object
     /**
      * Asks user to add an airport
      * @param input Scanner
@@ -214,7 +123,7 @@ public class Display {
         while (selecting) {
             System.out.println("\nSelect the airport to add the aircraft");
 
-            for (int i = 0; i < (Main.getAirportList().toArray().length); i++) {
+            for (int i = 0; i < (Main.airportList.toArray().length); i++) {
                 System.out.print(Main.airportList.get(i).getAirportName());
                 if (i < Main.airportList.size() - 1) {
                     System.out.print(", ");
@@ -224,7 +133,7 @@ public class Display {
             System.out.print("\n");
             airport = input.next();
 
-            for (int i = 0; i < Main.getAirportList().toArray().length; i++) {
+            for (int i = 0; i < Main.airportList.toArray().length; i++) {
                 if (airport.equalsIgnoreCase(Main.airportList.get(i).getAirportName())) {
                 /*
                 Create Aircraft
@@ -238,7 +147,7 @@ public class Display {
                         if (x instanceof String) {  //If airport name is string
                             if (y instanceof String) {    //If capacity is an integer (string)
                                 Main.airportList.get(i).createAircraft(x, Main.airportList.get(i).getAirportName(), y);
-                                i = Main.getAirportList().toArray().length;
+                                i = Main.airportList.toArray().length;
                                 creating = false;
                             } else {
                                 System.out.println("Error: Not a valid response. Try again.");
@@ -251,7 +160,7 @@ public class Display {
                 }
             }
         }
-        System.out.println("Aircraft Created.");
+        System.out.println("\nAircraft Created.");
     }
 
     /**
@@ -315,5 +224,203 @@ public class Display {
             }
         }
         System.out.println("Created Passenger.");
+    }
+
+    /**
+     * Adds an Aiport, Aircraft, or Passenger Object
+     * @param input Scanner
+     */
+    public static void addObject (Scanner input) {
+        boolean adding = true;
+
+        while (adding) {
+            System.out.println("Add what?\n");
+            Display.printArray(objectType);
+            String add = input.next();
+
+            if (add.equalsIgnoreCase(objectType[0])) {  //Airport
+                addAirport(input);
+                adding = false;
+            } else if (add.equalsIgnoreCase(objectType[1])) {   //Aircraft
+                addAircraft(input);
+                adding = false;
+            } else if (add.equalsIgnoreCase(objectType[2])) {   //Passenger
+                addPassenger(input);
+                adding = false;
+            } else {
+                System.out.println("Error: Not a valid response. Try again.");
+                continue;
+            }
+        }
+    }
+
+
+    //View an object
+    /**
+     * Displays airport information from airport
+     * @param input
+     */
+    public static void viewAirport (Scanner input) {
+        System.out.println("\nWhich airport?:");
+        Main.printAirportList();
+        String x = input.next();
+        System.out.println();
+        boolean found = false;
+
+        for (int i = 0; i < Main.airportList.size(); i++) {
+            if (x.equalsIgnoreCase(Main.airportList.get(i).getAirportName())) {  //If user input is equal to the name of an existing airport
+                setDisplayBox("Airport: " + Main.airportList.get(i).getAirportName(), Main.airportList.get(i).getAirportInfo());
+                printDisplayBox();
+                found = true;
+                break;
+            }
+        }
+        if (found == false) {
+            System.out.println("Airport not found.");
+        }
+    }
+
+    /**
+     * Displays flight information from aircraft
+     * @param input Scanner
+     */
+    public static void viewAircraft (Scanner input) {
+
+        while (airportFound == false) {
+            int i = 0;
+            System.out.println("\nAircraft at which airport?:");
+            Main.printAirportList();
+            String x = input.next();
+            System.out.println();
+            if (x.equalsIgnoreCase(Main.airportList.get(i).getAirportName())) {  //If user input is equal to the name of an existing airport
+                airportFound = true;
+                System.out.println("Aiport found");
+                foundAiport = Main.airportList.get(i);
+                i++;
+            }
+        }
+
+        if (airportFound == true) {
+            while (flightFound == false) {
+                int j = 0;
+                System.out.println("Which flight?: ");
+                foundAiport.printAircraftList();
+                int y = input.nextInt() - 1;
+                System.out.println();
+                if (y == (foundAiport.aircraftList.get(y).flightNumber)) {
+                    System.out.println("Flight Found");
+                    setDisplayBox("Flight Number: " + (j+1),foundAiport.aircraftList.get(y).getFlightInfo());
+                    printDisplayBox();
+                    flightFound = true;
+                    foundFlight = foundAiport.aircraftList.get(j);
+                    j++;
+                    continue;
+                }
+            }
+        } else if (airportFound == true && flightFound == true) {
+            setDisplayBox("Flight Number: " + (foundFlight.flightNumber+1), foundFlight.getFlightInfo());
+            printDisplayBox();
+        }
+    }
+
+    /**
+     * View an Airport, Aircraft, or Passenger's info
+     * @param input Scanner
+     */
+    public static void viewObject (Scanner input) {
+        boolean viewing = true;
+
+        while (viewing) {
+            System.out.println("\nView what?");
+            Display.printArray(objectType);
+            String add = input.next();
+
+            if (add.equalsIgnoreCase(objectType[0])) {  //Airport
+                viewAirport(input);
+                viewing = false;
+            } else if (add.equalsIgnoreCase(objectType[1])) {   //Aircraft
+                viewAircraft(input);
+                viewing = false;
+            } else if (add.equalsIgnoreCase(objectType[2])) {   //Passenger
+
+            } else {
+                System.out.println("Error: Not a valid response. Try again.");
+                continue;
+            }
+        }
+    }
+
+
+    //Display Box
+    /**
+     * Gets the length of the longest line in the String[]
+     * @param information Array trying to get the longest
+     * length from.
+     * @return int maximum length
+     */
+    public static int getLen (String[] information) {
+        int len = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (len < information[j].length()) {
+                    len = information[j].length();
+                }
+            }
+        }
+        return len;
+    }
+
+    public static int getListLen (List<Airport> information) {
+        int len = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (len < information.get(j).getAirportName().length()) {
+                    len = information.get(j).getAirportName().length();
+                }
+            }
+        }
+        return len;
+    }
+
+    /**
+     * This will display any array you put into it.
+     * @param information Array being displayed
+     * @param title Title of display
+     * @return String displayBox
+     */
+    public static void setDisplayBox (String title, String[] information) {
+        int maxLen = getLen(information);
+
+        /*
+        Header section of displayBox
+         */
+        displayBox = ("-".repeat(maxLen+4) + "\n")
+                + ("|" + " ".repeat(((maxLen + 3) - title.length()) / 2) + title + " ".repeat(((maxLen + 2) - title.length()) / 2) + "|\n")
+                + ("-".repeat(maxLen + 4) + "\n");
+
+        /*
+        Body
+         */
+        for (int i = 0; i < information.length; i++) { //For every row in the box
+            displayBox = displayBox + (("|" + " ".repeat(((maxLen + 3) - information[i].length()) / 2))
+                    + (information[i])
+                    + (" ".repeat(((maxLen + 2) - information[i].length()) / 2) + "|") + "\n");
+        }
+        displayBox = displayBox + ("-".repeat(maxLen + 4) + "\n");
+    }
+
+    /**
+     * Gets displaybox
+     * @return String displaybox
+     */
+    public String getDisplayBox () {
+        return displayBox;
+    }
+
+    /**
+     * Prints to information box to console
+     */
+    public static void printDisplayBox () {
+        System.out.println(displayBox);
     }
 }

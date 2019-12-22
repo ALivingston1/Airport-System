@@ -1,21 +1,29 @@
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class Main {
 
     public static List<Airport> airportList = new ArrayList<Airport>();
 
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-
-        setupAirports();
-
-        Display.printAirports();
-        Display.optionMenu(input);
+    /**
+     * Creates an Airport object
+     */
+    public static void createAirport () {
+        Airport airport = new Airport();
+        airportList.add(airport);
     }
 
     /**
-     * Creates a random amount of airports within bounds of 100
+     * Creates an Airport object with certain parameters
+     * @param name Airport Name
+     * @param capacity Aircraft capacity of airport.
+     */
+    public static void createAirport (String name, int capacity) {
+        Airport airport = new Airport(name, capacity);
+        airportList.add(airport);
+    }
+
+    /**
+     * Creates 30 Airports
      */
     public static void setupAirports () {
         for (int i = 0; i < 30; i++) {
@@ -23,17 +31,23 @@ public class Main {
         }
     }
 
-    public static void createAirport () {
-        Airport airport = new Airport();
-        airportList.add(airport);
+    /**
+     * Prints the name of each airport in the list
+     */
+    public static void printAirportList () {
+        for (int i = 0; i < airportList.size(); i++) {
+            System.out.print(airportList.get(i).getAirportName());
+            if (i < airportList.size() - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.print("\n");
     }
 
-    public static void createAirport (String name, int capacity) {
-        Airport airport = new Airport(name, capacity);
-        airportList.add(airport);
-    }
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
 
-    public static List<Airport> getAirportList() {
-        return airportList;
+        setupAirports();
+        Display.optionMenu(input);
     }
 }

@@ -21,6 +21,7 @@ public class FlightInfo extends Display {
     private static String airline;
     private static String depAirport;
     private static String arrAirport;
+
     public String[] flightInfo = new String[3];
 
     /*
