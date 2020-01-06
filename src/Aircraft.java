@@ -16,7 +16,10 @@ public class Aircraft {
     Defines passenger data
      */
     private Passenger passengerInfo;
-    private static List<Passenger> passengerList = new ArrayList<Passenger>();
+    public int passengerCapacity;
+    public int generatedPassengers;
+    public int passengerNum = 1;
+    public List<Passenger> passengerList = new ArrayList<Passenger>();
 
     /**
      * Constructor for Aircraft class.
@@ -25,14 +28,17 @@ public class Aircraft {
      * @param depAirport Departure airport
      */
     public Aircraft (String depAirport, int flightNumber) {
+        setPassengerCapacity();
+        generatedPassengers = rand.nextInt(passengerCapacity);
+        setFlightInfo(depAirport);
+
         /*
         Create a random number of aircraft within the capacity of the airport
          */
-        for (int i = 0; i < rand.nextInt(416); i++) {
+        setFlightNumber(flightNumber);
+        for (int i = 1; i < generatedPassengers; i++) {
             createPassenger();
         }
-        setFlightNumber(flightNumber);
-        setFlightInfo(depAirport);
         aircraftInfo[0] = "Flight Information: " + getFlightInfo();
 
         setPassengerInfo();
@@ -45,7 +51,9 @@ public class Aircraft {
      * @param depAirport Departure Airport
      * @param arrAirport Arrival Airport
      */
-    public Aircraft (int flightNumber, String airline, String depAirport, String arrAirport) {
+    public Aircraft (int flightNumber, String airline, String depAirport, String arrAirport, int passengerCapacity) {
+        setPassengerCapacity(passengerCapacity);
+        generatedPassengers = rand.nextInt(passengerCapacity);
         setFlightNumber(flightNumber);
         setFlightInfo(airline, depAirport, arrAirport);
 
@@ -57,8 +65,28 @@ public class Aircraft {
 
 
     /**
-     * Getters and setters for flight info
+     * Getters and setters for passengers
      */
+    /**
+     Set capacity at airport.
+     */
+    private void setPassengerCapacity () {
+        boolean pos = false;
+        while (!pos) {
+            int num = rand.nextInt(300);
+            if (num != 0) {
+                this.passengerCapacity = num;
+                break;
+            }
+        }
+    }
+
+    /**
+     Allows for custom capacity
+     */
+    private void setPassengerCapacity (int capacity) {
+        this.passengerCapacity = capacity;
+    }
 
     private void setFlightInfo (String depAirport) {
         flightInfo = new FlightInfo(depAirport);
@@ -76,19 +104,15 @@ public class Aircraft {
     }
 
     /**
-     * Gets flight number
-     * @return flightNumber
-     */
-    public int getFlightNumber() {
-        return flightNumber;
-    }
-
-    /**
      * Sets flight number for aircraft.
      * @param flightNumber Flight number
      */
-    public void setFlightNumber(int flightNumber) {
+    public void setFlightNumber (int flightNumber) {
         this.flightNumber = flightNumber;
+    }
+
+    public int getFlightNumber () {
+        return flightNumber;
     }
 
     /**
@@ -115,6 +139,7 @@ public class Aircraft {
     public void createPassenger () {
         Passenger passenger = new Passenger();
         this.passengerList.add(passenger);
+        passengerNum++;
     }
 
     /**
@@ -123,13 +148,14 @@ public class Aircraft {
     public void createPassenger (String name, String seatType, String numOfLuggage) {
         Passenger passenger = new Passenger(name, seatType, numOfLuggage);
         this.passengerList.add(passenger);
+        passengerNum++;
     }
 
     /**
      * Gets list of passengers on the aircraft
      * @return List<Passenger> passengerList
      */
-    public static List<Passenger> getPassengerList () {
+    public List<Passenger> getPassengerList () {
         return passengerList;
     }
 }

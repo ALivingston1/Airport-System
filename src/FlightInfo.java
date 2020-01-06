@@ -19,7 +19,7 @@ public class FlightInfo extends Display {
     departure/arrival airport.
      */
     private static String airline;
-    private static String depAirport;
+    public String depAirport;
     private static String arrAirport;
 
     public String[] flightInfo = new String[3];
@@ -100,15 +100,6 @@ public class FlightInfo extends Display {
         return airline;
     }
 
-
-    /**
-     * Getters and setters for departure airport
-     */
-
-    private void setDepAirport() {
-        this.len = this.airportList.length;
-        this.depAirport = airportList[rand.nextInt(len)];
-    }
 
     /*
     Overrides the default setDepAirport() method.

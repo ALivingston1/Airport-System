@@ -7,10 +7,7 @@ public class Display {
 
     private Random rand = new Random();
 
-    private static boolean airportFound = false;
-    private static boolean flightFound = false;
-
-    static Airport foundAiport;
+    static Airport foundAirport;
     static Aircraft foundFlight;
 
 
@@ -138,15 +135,16 @@ public class Display {
                 /*
                 Create Aircraft
                  */
-                    System.out.println("Enter Information: AIRLINE, ARRIVAL AIRPORT");
+                    System.out.println("Enter Information: AIRLINE, ARRIVAL AIRPORT, and CAPACITY");
                     String x = input.next();
                     String y = input.next();
+                    int z = input.nextInt();
                     boolean creating = true;
 
                     while (creating) {
                         if (x instanceof String) {  //If airport name is string
                             if (y instanceof String) {    //If capacity is an integer (string)
-                                Main.airportList.get(i).createAircraft(x, Main.airportList.get(i).getAirportName(), y);
+                                Main.airportList.get(i).createAircraft(x, Main.airportList.get(i).getAirportName(), y, z);
                                 i = Main.airportList.toArray().length;
                                 creating = false;
                             } else {
@@ -183,7 +181,7 @@ public class Display {
             for (int i = 0; i < Main.airportList.size(); i++) {
                 if (airport.equalsIgnoreCase(Main.airportList.get(i).getAirportName())) {
                     System.out.println("Select the aircraft to add the passenger (Use the index of the aircraft)");
-                    System.out.println(Arrays.toString(Aircraft.getPassengerList().toArray()));
+                    foundAirport.printAircraftList();
                     aircraft = input.next();
 
                 /*
@@ -236,6 +234,7 @@ public class Display {
         while (adding) {
             System.out.println("Add what?\n");
             Display.printArray(objectType);
+            System.out.println();
             String add = input.next();
 
             if (add.equalsIgnoreCase(objectType[0])) {  //Airport
@@ -285,6 +284,8 @@ public class Display {
      * @param input Scanner
      */
     public static void viewAircraft (Scanner input) {
+        boolean airportFound = false;
+        boolean flightFound = false;
 
         while (airportFound == false) {
             int i = 0;
@@ -293,33 +294,70 @@ public class Display {
             String x = input.next();
             System.out.println();
             if (x.equalsIgnoreCase(Main.airportList.get(i).getAirportName())) {  //If user input is equal to the name of an existing airport
-                airportFound = true;
-                System.out.println("Aiport found");
-                foundAiport = Main.airportList.get(i);
+                foundAirport = Main.airportList.get(i);
                 i++;
+                airportFound = true;
             }
         }
 
         if (airportFound == true) {
             while (flightFound == false) {
-                int j = 0;
                 System.out.println("Which flight?: ");
-                foundAiport.printAircraftList();
-                int y = input.nextInt() - 1;
+                foundAirport.printAircraftList();
+                int y = input.nextInt();
                 System.out.println();
-                if (y == (foundAiport.aircraftList.get(y).flightNumber)) {
-                    System.out.println("Flight Found");
-                    setDisplayBox("Flight Number: " + (j+1),foundAiport.aircraftList.get(y).getFlightInfo());
-                    printDisplayBox();
+                if (y == (foundAirport.aircraftList.get(y-1).getFlightNumber())) {
+                    foundFlight = foundAirport.aircraftList.get(y-1);
                     flightFound = true;
-                    foundFlight = foundAiport.aircraftList.get(j);
-                    j++;
                     continue;
                 }
             }
-        } else if (airportFound == true && flightFound == true) {
-            setDisplayBox("Flight Number: " + (foundFlight.flightNumber+1), foundFlight.getFlightInfo());
+        }
+        if (airportFound == true && flightFound == true) {
+            setDisplayBox("Flight Number " + (foundFlight.flightNumber), foundFlight.getFlightInfo());
             printDisplayBox();
+        }
+    }
+
+    /**
+     * Displays passenger information
+     * @param input Scanner
+     */
+    public static void viewPassengers (Scanner input) {
+        boolean airportFound = false;
+        boolean flightFound = false;
+
+        while (airportFound == false) {
+            int i = 0;
+            System.out.println("\nAircraft at which airport?:");
+            Main.printAirportList();
+            String x = input.next();
+            System.out.println();
+            if (x.equalsIgnoreCase(Main.airportList.get(i).getAirportName())) {  //If user input is equal to the name of an existing airport
+                foundAirport = Main.airportList.get(i);
+                i++;
+                airportFound = true;
+            }
+        }
+
+        if (airportFound == true) {
+            while (flightFound == false) {
+                System.out.println("Which flight?: ");
+                foundAirport.printAircraftList();
+                int y = input.nextInt();
+                System.out.println();
+                if (y == (foundAirport.aircraftList.get(y-1).getFlightNumber())) {
+                    foundFlight = foundAirport.aircraftList.get(y-1);
+                    flightFound = true;
+                    continue;
+                }
+            }
+        }
+        if (airportFound == true && flightFound == true) {
+            for (int i = 0; i < foundFlight.generatedPassengers-1; i++) {
+                setDisplayBox("Passenger " + (i+1), foundFlight.passengerList.get(i).passengerInfo);
+                printDisplayBox();
+            }
         }
     }
 
@@ -342,7 +380,8 @@ public class Display {
                 viewAircraft(input);
                 viewing = false;
             } else if (add.equalsIgnoreCase(objectType[2])) {   //Passenger
-
+                viewPassengers(input);
+                viewing = false;
             } else {
                 System.out.println("Error: Not a valid response. Try again.");
                 continue;
@@ -364,18 +403,6 @@ public class Display {
             for (int j = 0; j < 3; j++) {
                 if (len < information[j].length()) {
                     len = information[j].length();
-                }
-            }
-        }
-        return len;
-    }
-
-    public static int getListLen (List<Airport> information) {
-        int len = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (len < information.get(j).getAirportName().length()) {
-                    len = information.get(j).getAirportName().length();
                 }
             }
         }
@@ -410,17 +437,9 @@ public class Display {
     }
 
     /**
-     * Gets displaybox
-     * @return String displaybox
-     */
-    public String getDisplayBox () {
-        return displayBox;
-    }
-
-    /**
      * Prints to information box to console
      */
     public static void printDisplayBox () {
-        System.out.println(displayBox);
+        System.out.print(displayBox);
     }
 }

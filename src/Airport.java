@@ -4,10 +4,11 @@ import java.util.Random;
 
 public class Airport extends Display {
     public static String[] airportList = {"ATL", "LAX", "ORD", "DFW", "DEN", "JFK", "SFO", "SEA", "LAS", "MCO", "EWR", "CLT", "PHX", "IAH", "MIA", "BOS", "MSP", "FLL", "DTW", "PHL", "LGA", "BWI", "SLC", "SAN", "IAD", "DCA", "MDW", "TPA", "PDX", "HNL"};
-    public List<Aircraft> aircraftList = new ArrayList<Aircraft>();
+    public static List<Aircraft> aircraftList = new ArrayList<Aircraft>();
     private static String[] airportInfo = new String[4];
 
-    public static int flightNum = 0;
+    public static int generatedAircraft;
+    public int activeAircraft = 0;
     private static int capacity;
 
     /*
@@ -46,7 +47,15 @@ public class Airport extends Display {
     Set capacity at airport.
      */
     private void setCapacity () {
-        this.capacity = rand.nextInt(2500);
+        boolean pos = false;
+        while (!pos) {
+            int randCapacity = rand.nextInt(2500);
+            if (randCapacity != 0) {
+                this.capacity = randCapacity;
+            } else {
+                pos = true;
+            }
+        }
     }
 
     /**
@@ -86,17 +95,17 @@ public class Airport extends Display {
      * Creates an aircraft with departure airport set to the airport's name.
      */
     public void createAircraft () {
-        Aircraft aircraft = new Aircraft(name, flightNum);
-        flightNum++;
+        activeAircraft = activeAircraft + 1;
+        Aircraft aircraft = new Aircraft(name, activeAircraft);
         aircraftList.add(aircraft);
     }
 
     /**
      * Creates a custom aircraft.
      */
-    public void createAircraft (String airline, String depAirport, String arrAirport) {
-        Aircraft aircraft = new Aircraft(flightNum, airline, depAirport, arrAirport);
-        flightNum = flightNum + 1;
+    public void createAircraft (String airline, String depAirport, String arrAirport, int passengerCapacity) {
+        this.activeAircraft = activeAircraft + 1;
+        Aircraft aircraft = new Aircraft(activeAircraft, airline, depAirport, arrAirport, passengerCapacity);
         aircraftList.add(aircraft);
     }
 
@@ -124,10 +133,14 @@ public class Airport extends Display {
         setAirportName();
         setCapacity();
 
+        aircraftList.clear();
+        activeAircraft = 0;
+
         /*
         Create a random number of aircraft within the capacity of the airport
          */
-        for (int i = 0; i < rand.nextInt(capacity); i++) {
+        generatedAircraft = rand.nextInt(capacity);
+        for (int i = 1; i <= generatedAircraft; i++) {
             createAircraft();
         }
 
@@ -147,6 +160,10 @@ public class Airport extends Display {
     public Airport (String name, int capacity) {
         setAirportName(name);
         setCapacity(capacity);
+
+        if (foundAirport.aircraftList.size() == aircraftList.size()) {
+            activeAircraft++;
+        }
 
         /*
         Sets up the flight info
